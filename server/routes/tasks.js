@@ -42,7 +42,7 @@ router.post("/", authorization, function (req, res, next) {
   const { error, value } = taskCreationSchema.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
   let { title, description, status, assignee, projectId, orgId } = req.body;
-  let { userId } = req.headers;
+  let { userId } = req.headers.userInfo;
   let action = new CreateTask({
     title,
     description,
@@ -70,7 +70,7 @@ router.patch("/:taskId", authorization, function (req, res, next) {
   const { error, value } = taskUpdateSchema.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
   let { title, description, status, assignee } = req.body;
-  let { userId } = req.headers;
+  let { userId } = req.headers.userInfo;
   let { taskId } = req.params;
   let action = new UpdateTask({
     taskId,

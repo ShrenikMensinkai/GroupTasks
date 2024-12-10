@@ -49,6 +49,20 @@ class ProjectsRepository {
       );
     }
   }
+
+  async getProjectsByOrgIdProjectIDS({ projectIds, orgId }) {
+    try {
+      let result = await knex(this.PROJECT_TABLE)
+        .whereIn("id", projectIds)
+        .andWhere("orgId", orgId);
+      return result;
+    } catch (error) {
+      throw new httperror(
+        error.status || 400,
+        error.message || "Failed to get project"
+      );
+    }
+  }
 }
 
 exports.ProjectsRepository = ProjectsRepository;

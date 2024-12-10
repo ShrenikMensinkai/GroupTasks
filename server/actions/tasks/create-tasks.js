@@ -2,6 +2,7 @@ const httperror = require("http-errors");
 const { TaskRepository } = require("../../repositories/tasks");
 const logger = require("../../utils/logger");
 const { ProjectsRepository } = require("../../repositories/projects");
+const { UsersRepository } = require("../../repositories/users");
 
 class CreateTask {
   constructor({
@@ -26,7 +27,15 @@ class CreateTask {
       logger.info(`Request Id: ${req.requestId} - Create Task`);
       let taskRepository = new TaskRepository();
       let projectsRepository = new ProjectsRepository();
+      let usersRepository = new UsersRepository();
 
+      let user = await usersRepository.getUserById({
+        userId: this.userId,
+      });
+      let userProjects = user.projects;
+      if (!userProjects.includes(this.projectId)) {
+        throw new httperror(401, " Unauthorized");
+      }
       let project = await projectsRepository.getProjectByOrgIdProjectId({
         projectId: this.projectId,
         orgId: this.orgId,

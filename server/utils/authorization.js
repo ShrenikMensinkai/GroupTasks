@@ -8,8 +8,8 @@ function authorization(req, res, next) {
   } else {
     try {
       token = token.replace("Bearer", "").replace(" ", "");
-      let decoded = jwt.verify(token, process.env.SECRET_KEY);
-      req.headers.userId = decoded.userId;
+      let decodedUserInfo = jwt.verify(token, process.env.SECRET_KEY);
+      req.headers.userInfo = decodedUserInfo;
       next();
     } catch (error) {
       throw new httperror(

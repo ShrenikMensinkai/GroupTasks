@@ -16,7 +16,7 @@ class UsersRepository {
     }
   }
 
-  async createUser({ name, email, password, orgId }) {
+  async createUser({ name, email, password, orgId, projectIds }) {
     try {
       let result = await knex(this.USERS_TABLE)
         .insert({
@@ -24,6 +24,7 @@ class UsersRepository {
           email,
           password,
           orgId,
+          projects: JSON.stringify(projectIds),
         })
         .returning("*");
       return "User Createion Success";
@@ -43,6 +44,18 @@ class UsersRepository {
       throw new httperror(
         error.status || 400,
         error.message || "Failed to get user list"
+      );
+    }
+  }
+
+  async getUserById({ userId }) {
+    try {
+      let result = await knex(this.USERS_TABLE).where({ id: userId }).first();
+      return result;
+    } catch (error) {
+      throw new httperror(
+        error.status || 400,
+        error.message || "Failed to get user"
       );
     }
   }

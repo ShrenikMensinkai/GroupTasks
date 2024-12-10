@@ -27,6 +27,7 @@ class UserLogin {
           userId: user.id,
           name: user.name,
           email: user.email,
+          orgId: user.orgId,
         },
         process.env.SECRET_KEY,
         {
@@ -38,6 +39,7 @@ class UserLogin {
         userId: user.id,
         name: user.name,
         email: user.email,
+        orgId: user.orgId,
       };
     } catch (error) {
       throw new httperror(

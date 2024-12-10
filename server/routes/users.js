@@ -11,6 +11,7 @@ const userRegistrationSchema = Joi.object({
   email: Joi.string().email().required(),
   password: Joi.string().min(3).max(12).required(),
   orgId: Joi.number().required(),
+  projectIds: Joi.array().items(Joi.number()),
 });
 
 const useLoginSchema = Joi.object({
@@ -37,8 +38,14 @@ router.get("/", authorization, function (req, res, next) {
 router.post("/registration", function (req, res, next) {
   const { error, value } = userRegistrationSchema.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
-  let { name, email, password, orgId } = req.body;
-  let action = new UserRegistration({ name, email, password, orgId });
+  let { name, email, password, orgId, projectIds } = req.body;
+  let action = new UserRegistration({
+    name,
+    email,
+    password,
+    orgId,
+    projectIds,
+  });
   action
     .execute(req)
     .then((result) => {

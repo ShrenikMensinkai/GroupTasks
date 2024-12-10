@@ -31,7 +31,7 @@ router.post("/", authorization, function (req, res, next) {
   const { error, value } = projectCreationSchema.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
   let { name, description, orgId } = req.body;
-  let { userId } = req.headers;
+  let { userId } = req.headers.userInfo;
   let action = new CreateProject({ name, description, orgId, userId });
   action
     .execute(req)
