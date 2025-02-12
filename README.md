@@ -1,5 +1,5 @@
 > [!WARNING]
-> I implemented this for an interview once ages ago, but now it's unmaintained.
+> I implemented this for an interview, but now it's unmaintained.
 
 # todo-backend-express-knex
 
